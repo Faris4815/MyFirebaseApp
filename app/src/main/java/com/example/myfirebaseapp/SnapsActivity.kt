@@ -33,7 +33,7 @@ class SnapsActivity : AppCompatActivity() {
         // Handle item selection
         return when (item.itemId) {
             R.id.createSnap -> {
-                //TODO: Wechsle zur Activity, wo man einen snap erstellen kann
+                //Wechsle zur Activity, wo man einen snap erstellen kann
                 val intent = Intent(this, CreateSnapActivity::class.java)
                 startActivity(intent)
                 true
@@ -52,9 +52,7 @@ class SnapsActivity : AppCompatActivity() {
         mAuth.signOut()
     }
 
-    fun onClickPickPicture(){
-       //TODO: gallery öffnen und nutzer bild auswählen lasen. macht man iwie mir intents aber so wie im tutorial ist deprecated. wie immer...
-    }
+
 
 
 
