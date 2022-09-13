@@ -2,12 +2,15 @@ package com.example.myfirebaseapp
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
@@ -17,6 +20,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 class CreateSnapActivity : AppCompatActivity() {
 
@@ -59,6 +63,36 @@ class CreateSnapActivity : AppCompatActivity() {
 
         }
 
+        send_BTN?.setOnClickListener(){
+            try{
+                var data = imageViewToBytes(picture_IV!!)
+                var uploadTask = snapRef?.putBytes(data)
+                uploadTask?.addOnFailureListener {
+                    // Handle unsuccessful uploads
+                    Log.i("Fehler:","Leider konnte das Bild nicht hochgeladen werden")
+                    Toast.makeText(
+                        baseContext, "Upload failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }?.addOnSuccessListener { taskSnapshot ->
+                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                    // ...
+                    Log.i("SUCCESS:","Das Bild wurde erfolgreich hochgeladen")
+                    Toast.makeText(
+                        baseContext, "Upload successful.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e : NullPointerException){
+                e.printStackTrace()
+                Log.i("Fehler:" , "Kein Bild ausgewählt")
+                Toast.makeText(
+                    baseContext, "Pick a picture first",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
 
         }
 
@@ -94,6 +128,14 @@ class CreateSnapActivity : AppCompatActivity() {
         if(requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             getImage.launch("image/*")
         }
+    }
+
+    // Get the data from an ImageView as bytes
+    fun imageViewToBytes(imageView: ImageView): ByteArray {
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        return baos.toByteArray()
     }
 
 }
