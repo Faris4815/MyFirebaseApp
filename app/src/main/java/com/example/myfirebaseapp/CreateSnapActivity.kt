@@ -14,6 +14,9 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 class CreateSnapActivity : AppCompatActivity() {
 
@@ -22,6 +25,11 @@ class CreateSnapActivity : AppCompatActivity() {
     var selectPicture_BTN : Button? = null
     var send_BTN : Button? = null
     lateinit var getImage : ActivityResultLauncher<String>
+
+    var storage = Firebase.storage
+    var storageRef = storage.reference
+    var imagesRef : StorageReference? = storageRef.child("images")
+    var snapRef :  StorageReference? = imagesRef?.child("snap")
 
     private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 1
 
