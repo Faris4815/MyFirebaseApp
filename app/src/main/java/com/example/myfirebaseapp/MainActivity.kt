@@ -2,6 +2,7 @@ package com.example.myfirebaseapp
 
 import android.content.Context
 import android.content.Intent
+import android.icu.number.IntegerWidth
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var login_BTN : Button
 
     private lateinit var auth: FirebaseAuth
+
+    val database = Firebase.database("https://absolute-theme-351121-default-rtdb.europe-west1.firebasedatabase.app/")
+    val databaseMessageRef = database.getReference("message")
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         var email = emailEditText?.text.toString()
         var password = passwordEditText?.text.toString()
 
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -68,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     //TODO: Wenn man sich erfolgreich registriert hat, soll man sofort auf sein Profil kommen
                     //val user = auth.currentUser
                     //updateUI(user)
+                    database.reference.child("users").child(task.result.user?.uid.toString()).child("email").setValue(emailEditText?.text.toString())
                     login()
                 } else {
                     // If registration fails, display a message to the user.

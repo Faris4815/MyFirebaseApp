@@ -21,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 class CreateSnapActivity : AppCompatActivity() {
 
@@ -34,6 +35,8 @@ class CreateSnapActivity : AppCompatActivity() {
     var storageRef = storage.reference
     var imagesRef : StorageReference? = storageRef.child("images")
     var snapRef :  StorageReference? = imagesRef?.child("snap")
+
+    var imageName = UUID.randomUUID().toString() + ".jpg"
 
     private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 1
 
@@ -66,7 +69,8 @@ class CreateSnapActivity : AppCompatActivity() {
         send_BTN?.setOnClickListener(){
             try{
                 var data = imageViewToBytes(picture_IV!!)
-                var uploadTask = snapRef?.putBytes(data)
+                //Lädt das Bild hoch auf Firebase storage
+                var uploadTask = imagesRef?.child(imageName)?.putBytes(data)
                 uploadTask?.addOnFailureListener {
                     // Handle unsuccessful uploads
                     Log.i("Fehler:","Leider konnte das Bild nicht hochgeladen werden")
@@ -77,7 +81,7 @@ class CreateSnapActivity : AppCompatActivity() {
                 }?.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
-                    Log.i("SUCCESS:","Das Bild wurde erfolgreich hochgeladen")
+                    Log.i("Erfolg:","Das Bild wurde erfolgreich hochgeladen")
                     Toast.makeText(
                         baseContext, "Upload successful.",
                         Toast.LENGTH_SHORT
