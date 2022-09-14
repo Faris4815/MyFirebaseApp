@@ -1,18 +1,21 @@
 package com.example.myfirebaseapp
 
+import android.R.attr.data
 import android.content.Context
 import android.content.Intent
-import android.icu.number.IntegerWidth
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         login_BTN.setOnClickListener{
             onClickLogin()
         }
+
     }
 
     public override fun onStart() {
