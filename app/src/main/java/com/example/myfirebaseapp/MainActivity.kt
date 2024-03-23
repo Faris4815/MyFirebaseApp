@@ -15,7 +15,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
-
+    //Faris
     var emailEditText : EditText? = null
     var passwordEditText : EditText? = null
     lateinit var register_BTN : Button
