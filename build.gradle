@@ -10,7 +10,7 @@ buildscript {
     dependencies {
 
         // Add the dependency for the Google services Gradle plugin
-        classpath 'com.google.gms:google-services:4.3.13'
+        classpath 'com.google.gms:google-services:4.4.1'
 
     }
 }
@@ -21,7 +21,7 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 
